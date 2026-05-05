@@ -1,0 +1,32 @@
+@baseUrl = http://localhost:3001
+@contentType = application/json
+@token = la_cucaracha_la_cucaracha_ya_no_puede_ya_no_puede_caminar
+@jwt = {{token}}
+
+### registro de usuario
+POST {{baseUrl}}/api/auth/registro
+Content-Type: {{contentType}}
+
+{
+  "email": "ivangarcia@example4.com",
+  "password": "admin1234"
+}
+
+### login de usuario (ejecuta y copia el campo token del JSON de respuesta)
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "ivangarcia@example4.com",
+  "password": "admin1234"
+}
+
+### actualizar perfil (pon tu token JWT real en Authorization)
+PUT {{baseUrl}}/api/auth/perfil
+Content-Type: {{contentType}}
+Authorization: Bearer {{jwt}}
+
+{
+  "email": "ivangarcia_nuevo@example.com",
+  "password": "nuevaPassword123"
+}

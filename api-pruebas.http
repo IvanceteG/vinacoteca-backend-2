@@ -1,0 +1,152 @@
+### API de Gestión de Cervezas y Vinos
+### Usa la extensión REST Client de VS Code/Cursor
+### Instala: "REST Client" de Huachao Mao
+
+@baseUrl = http://localhost:3001
+@contentType = application/json
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YzJkZjVmZDE0ZTMzYjc2NDU3ZTRhOCIsImlhdCI6MTc3NDM3ODkzMSwiZXhwIjoxNzc0OTgzNzMxfQ.ospjqdAdqDlsFRtGnWpy9I8hWdvY-LPJ1Ic21asNDD8
+
+### ============================================
+### INFORMACIÓN DE LA API
+### ============================================
+
+GET {{baseUrl}}/
+
+### ============================================
+### AUTH — LOGIN
+### ============================================
+
+### Login (copia el token de la resposta i enganxa'l a @token)
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "admin@api.com",
+  "password": "admin123"
+}
+
+### ============================================
+### OBTENER CERVEZAS
+### ============================================
+
+### Obtener todas las cervezas
+GET {{baseUrl}}/api/cervezas
+
+### Obtener cerveza por ID
+GET {{baseUrl}}/api/cervezas/507f1f77bcf86cd799439011
+
+### ============================================
+### CREAR CERVEZAS
+### ============================================
+
+### Crear cerveza - Estrella Damm
+POST {{baseUrl}}/api/cervezas
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "nom": "Estrella Damm",
+  "descripcio": "Cervesa lager catalana elaborada amb ingredients naturals.",
+  "graduacio": 5.4,
+  "tipus": "Lager"
+}
+
+### Crear cerveza - Corona Extra
+POST {{baseUrl}}/api/cervezas
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "nom": "Corona Extra",
+  "descripcio": "Cervesa mexicana lleuger amb toc cítric.",
+  "graduacio": 4.5,
+  "tipus": "Lager"
+}
+
+### ============================================
+### ACTUALIZAR CERVEZAS
+### ============================================
+
+### Actualizar cerveza - Reemplaza :id con un ID real
+PUT {{baseUrl}}/api/cervezas/507f1f77bcf86cd799439011
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "nom": "Estrella Damm Premium",
+  "descripcio": "Edició premium de la clàssica lager catalana.",
+  "graduacio": 5.4,
+  "tipus": "Lager"
+}
+
+### ============================================
+### ELIMINAR CERVEZAS
+### ============================================
+
+### Eliminar cerveza por ID
+DELETE {{baseUrl}}/api/cervezas/507f1f77bcf86cd799439011
+Authorization: Bearer {{token}}
+
+### ============================================
+### OBTENER VINOS
+### ============================================
+
+### Obtener todos los vinos
+GET {{baseUrl}}/api/vinos
+Authorization: Bearer {{token}}
+
+### Obtener vino por ID
+GET {{baseUrl}}/api/vinos/699caf9798857dc2add4c933
+Authorization: Bearer {{token}}
+
+### ============================================
+### CREAR VINOS
+### ============================================
+
+### Crear vino - Vega Sicilia
+POST {{baseUrl}}/api/vinos
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "nom": "Vega Sicilia Único",
+  "descripcio": "Vi negre icònic de Ribera del Duero, envelliment mínim de 10 anys.",
+  "graduacio": 14.5,
+  "tipus": "Negre"
+}
+
+### Crear vino - Albariño
+POST {{baseUrl}}/api/vinos
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "nom": "Albariño Martín Códax",
+  "descripcio": "Vi blanc gallec fresc i afruitat amb notes florals.",
+  "graduacio": 12.5,
+  "tipus": "Blanc"
+}
+
+### ============================================
+### ACTUALIZAR VINOS
+### ============================================
+
+### Actualizar vino - Reemplaza :id con un ID real
+PUT {{baseUrl}}/api/vinos/699caf9798857dc2add4c933
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "nom": "Vega Sicilia Único Reserva",
+  "descripcio": "Reserva especial amb envelliment prolongat.",
+  "graduacio": 14.5,
+  "tipus": "Negre"
+}
+
+### ============================================
+### ELIMINAR VINOS
+### ============================================
+
+### Eliminar vino por ID
+DELETE {{baseUrl}}/api/vinos/699caf9798857dc2add4c933
+Authorization: Bearer {{token}}
