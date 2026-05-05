@@ -16,11 +16,10 @@ const PORT = process.env.PORT || 3001
 // Accepta:
 //   1. La URL definida a FRONTEND_URL (variable d'entorn de producció)
 //   2. Qualsevol subdomini *.vercel.app (deploys de preview)
-//   3. localhost:5173 i 4173 (desenvolupament)
+//   3. localhost en ports habituals de desenvolupament (Vite, CRA, preview)
 const originsExactes = [
   process.env.FRONTEND_URL,
-  'https://vinacoteca-backend-2-2.onrender.com',
-  'http://localhost:3001'
+  'http://localhost:5173'
 ].filter(Boolean)
 
 app.use(cors({
