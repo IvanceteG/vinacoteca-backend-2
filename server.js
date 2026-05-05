@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3001
 //   3. localhost:5173 i 4173 (desenvolupament)
 const originsExactes = [
   process.env.FRONTEND_URL,
-  'https://vinacoteca-backend-2.onrender.com',
+  'https://vinacoteca-backend-2-2.onrender.com',
   'http://localhost:3001'
 ].filter(Boolean)
 
