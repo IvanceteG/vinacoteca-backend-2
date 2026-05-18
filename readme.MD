@@ -1,48 +1,174 @@
+# 🍷 Vinacoteca — Backend API
 
+API REST construïda amb Node.js + Express + MongoDB. Gestió de productes (vins i cerveses), usuaris amb rols, comandes amb notificació per correu i pujada d'imatges.
 
-✅ 1. Ya hiciste esto (correcto)
+## 🛠️ Stack
 
-Has borrado el .git de:
+- Node.js + Express 5
+- MongoDB Atlas + Mongoose
+- JWT (autenticació)
+- Bcrypt (hash de contrasenyes)
+- Multer (pujada d'arxius)
+- Nodemailer (correu)
+- CORS
 
-C:\Users\DAW2
+## 📋 Requisits
 
-👉 Eso elimina el repo mal creado (bien hecho).
+- Node.js 18+
+- Compte de MongoDB Atlas amb cluster
+- Compte de correu amb SMTP (p. ex. Gmail amb contrasenya d'aplicació)
 
-✅ 2. Ve a tu proyecto (MUY importante)
+## 🚀 Instal·lació
 
-En PowerShell escribe:
+```bash
+git clone <url-del-repo>
+cd vinacoteca-backend
+npm install
+```
 
-cd "C:\Users\DAW2\Desktop\DAW 2\Pruebas_Express"
-✅ 3. Comprueba que estás en el sitio correcto
-git rev-parse --show-toplevel
+## 🔐 Variables d'entorn
 
-👉 Si da error → PERFECTO (significa que ya no hay repo aún)
+Crea un fitxer `.env` a l'arrel basant-te en `.env.example`:
 
-✅ 4. Inicializa Git correctamente
-git init
-✅ 5. Crea .gitignore ANTES de añadir nada
-notepad .gitignore
+| Variable        | Descripció                                       |
+| --------------- | ------------------------------------------------ |
+| `MONGO_URI`     | Cadena de connexió a MongoDB Atlas               |
+| `PORT`          | Port del servidor (default 3001)                 |
+| `FRONTEND_URL`  | URL del frontend (per al CORS)                   |
+| `JWT_SECRET`    | Cadena secreta per signar els tokens JWT         |
+| `MAIL_HOST`     | Servidor SMTP (p. ex. `smtp.gmail.com`)          |
+| `MAIL_PORT`     | Port SMTP (587 per a TLS)                        |
+| `MAIL_USER`     | Usuari SMTP                                      |
+| `MAIL_PASS`     | Contrasenya o app-password SMTP                  |
+| `MAIL_TO`       | Destinatari de notificacions de comanda          |
 
-Y pega esto dentro (para Express/Node):
+## ▶️ Execució
 
-node_modules/
-.env
-npm-debug.log
+```bash
+# Desenvolupament (amb nodemon)
+npm run dev
 
-Guarda y cierra.
+# Producció
+npm start
+```
 
-✅ 6. Añade archivos
-git add .
-✅ 7. Haz el commit
-git commit -m "Primer commit limpio"
-🧠 Resultado esperado
+Servidor a `http://localhost:3001`.
 
-Ahora cuando hagas:
+## 📚 Endpoints principals
 
-git status
+### Públic
 
-👉 Debería salir algo como:
+| Mètode | Ruta                  | Descripció                |
+| ------ | --------------------- | ------------------------- |
+| GET    | `/api`                | Info de l'API             |
+| GET    | `/health`             | Health check              |
+| GET    | `/api/vinos`          | Llistat de vins           |
+| GET    | `/api/vinos/:id`      | Detall de vi              |
+| GET    | `/api/cervezas`       | Llistat de cerveses       |
+| GET    | `/api/cervezas/:id`   | Detall de cervesa         |
 
-nothing to commit, working tree clean
+### Auth
 
-Y ya no verás los 10.000 archivos 🎉
+| Mètode | Ruta                   | Descripció                          |
+| ------ | ---------------------- | ----------------------------------- |
+| POST   | `/api/auth/registro`   | Registre amb foto (multipart)       |
+| POST   | `/api/auth/login`      | Login → retorna JWT                 |
+| GET    | `/api/auth/perfil`     | Perfil de l'usuari autenticat       |
+| PUT    | `/api/auth/perfil`     | Actualitzar perfil (multipart)      |
+
+### Productes (editor o admin)
+
+| Mètode | Ruta                  | Permís          |
+| ------ | --------------------- | --------------- |
+| POST   | `/api/vinos`          | editor / admin  |
+| PUT    | `/api/vinos/:id`      | editor / admin  |
+| DELETE | `/api/vinos/:id`      | editor / admin  |
+| POST   | `/api/cervezas`       | editor / admin  |
+| PUT    | `/api/cervezas/:id`   | editor / admin  |
+| DELETE | `/api/cervezas/:id`   | editor / admin  |
+
+### Comandes
+
+| Mètode | Ruta                          | Permís              |
+| ------ | ----------------------------- | ------------------- |
+| POST   | `/api/comandes`               | Usuari autenticat   |
+| GET    | `/api/comandes/me`            | Usuari autenticat   |
+| GET    | `/api/comandes`               | Admin               |
+| PATCH  | `/api/comandes/:id/estat`     | Admin               |
+
+### Usuaris (només admin)
+
+| Mètode | Ruta                       | Descripció            |
+| ------ | -------------------------- | --------------------- |
+| GET    | `/api/usuaris`             | Llistar usuaris       |
+| PATCH  | `/api/usuaris/:id/rol`     | Canviar rol           |
+| DELETE | `/api/usuaris/:id`         | Eliminar usuari       |
+
+## 🗂️ Estructura
+
+```
+vinacoteca-backend/
+├── config/
+│   └── db.js                  # Connexió a MongoDB
+├── controlador/
+│   ├── controladorCervezas.js
+│   ├── controladorVinos.js
+│   └── controladorComandes.js
+├── middlewares/
+│   ├── authMiddleware.js      # protegir + autoritzar
+│   └── upload.js              # Multer
+├── modelos/
+│   ├── modeloUsuario.js
+│   ├── modeloCervezas.js
+│   ├── modeloVinos.js
+│   └── modeloComanda.js
+├── routes/
+│   ├── authRoutes.js
+│   ├── routerCervezas.js
+│   ├── routerVinos.js
+│   ├── routerComandes.js
+│   └── routerUsuaris.js
+├── scripts/                   # Scripts d'ajuda (crear admin, etc.)
+├── services/
+│   └── mailService.js         # Nodemailer
+├── uploads/                   # Imatges pujades (ignorat al .gitignore)
+├── server.js                  # Punt d'entrada
+└── api-pruebas.http           # Proves manuals (REST Client)
+```
+
+## 🛡️ Permisos per rol
+
+| Acció                          | Públic | Usuari | Editor | Admin |
+| ------------------------------ | :----: | :----: | :----: | :---: |
+| Veure productes                | ✅     | ✅     | ✅     | ✅    |
+| Registrar-se / login           | ✅     | ✅     | ✅     | ✅    |
+| Fer comandes                   | ❌     | ✅     | ✅     | ✅    |
+| CRUD productes                 | ❌     | ❌     | ✅     | ✅    |
+| Llistar/modificar usuaris      | ❌     | ❌     | ❌     | ✅    |
+| Canviar rols d'usuaris         | ❌     | ❌     | ❌     | ✅    |
+
+## 🧰 Scripts útils
+
+```bash
+node scripts/crearAdmin.js     # Crear usuari admin
+node scripts/crearEditor.js    # Crear usuari editor
+node scripts/crearUsuari.js    # Crear usuari normal
+```
+
+## 🧪 Proves manuals
+
+Al fitxer `api-pruebas.http` hi ha exemples per provar tots els endpoints amb la extensió **REST Client** de VS Code.
+
+Ordre recomanat:
+1. Login com a admin → copiar token
+2. Crear productes
+3. Login com a usuari → fer comanda
+4. Verificar que arriba el correu
+
+## 🌐 Desplegament
+
+Recomanat: Render, Railway o similar. Variables d'entorn necessàries al panell del servei (totes les del `.env.example`). Important:
+
+- `FRONTEND_URL` ha d'apuntar al domini real del frontend (sense barra final).
+- `MONGO_URI` amb usuari i contrasenya reals; afegeix `0.0.0.0/0` a Network Access d'Atlas o l'IP del proveïdor.
+- A Atlas, crea l'usuari de BD amb permisos `readWrite` sobre la BD `vinacoteca`.
